@@ -9,13 +9,13 @@ import java.util.Random;
 public class Minesweeper {
 
     /** The length of the grid */
-    private int length;
+    private final int length;
     /** The height of t he grid */
-    private int height;
+    private final int height;
     /** Number of mines on the grid */
-    private int num_mines;
+    private final int num_mines;
     /** The entire grid */
-    private int[][] grid;
+    private final int[][] grid;
 
     /** Constructor for Minesweeper */
     public Minesweeper(int len, int hght){
@@ -48,42 +48,75 @@ public class Minesweeper {
                 x = random.nextInt(length);
                 y = random.nextInt(height);
             }
-            grid[x][y] = 100;
 
             //cover the corner cases when x = 0 and y = 0
             if(x == 0 && y ==0){
-                grid[x][y + 1]++; //south
-                grid[x + 1][y]++; //east
-                grid[x + 1][y + 1]++; //southeast
-            } else if(x == 0){
-                grid[x][y - 1]++; //north
-                grid[x][y + 1]++; //south
-                grid[x + 1][y]++; //east
-                grid[x + 1][y - 1]++; //northeast
-                grid[x + 1][y + 1]++; //southeast
-            } else if(y == 0){
-                grid[x][y + 1]++; //south
-                grid[x + 1][y]++; //east
-                grid[x - 1][y]++; //west
-                grid[x - 1][y + 1]++; //southwest
-                grid[x + 1][y + 1]++; //southeast
+                grid[x][y + 1] = grid[x][y + 1] + 1; //south
+                grid[x + 1][y] = grid[x + 1][y] + 1; //east
+                grid[x + 1][y + 1] = grid[x + 1][y + 1] + 1; //southeast
+            } else if(x == 0 && y < height - 1){
+                grid[x][y - 1] = grid[x][y - 1] + 1; //north
+                grid[x][y + 1] = grid[x][y + 1] + 1; //south
+                grid[x + 1][y] = grid[x + 1][y] + 1; //east
+                grid[x + 1][y - 1] = grid[x + 1][y - 1] + 1; //northeast
+                grid[x + 1][y + 1] = grid[x + 1][y + 1] + 1; //southeast
+            } else if(y == 0 && x < length - 1){
+                grid[x][y + 1] = grid[x][y + 1] + 1; //south
+                grid[x + 1][y] = grid[x + 1][y] + 1; //east
+                grid[x - 1][y] = grid[x - 1][y] + 1; //west
+                grid[x - 1][y + 1] = grid[x - 1][y + 1] + 1; //southwest
+                grid[x + 1][y + 1] = grid[x + 1][y + 1] + 1; //southeast
+            } else if(y == height - 1 && x > 0 && x < length) {
+                grid[x][y - 1] = grid[x][y - 1] + 1; //north
+                grid[x + 1][y] = grid[x + 1][y] + 1; //east
+                grid[x - 1][y] = grid[x - 1][y] + 1; //west
+                grid[x + 1][y - 1] = grid[x + 1][y - 1] + 1; //northeast
+                grid[x - 1][y - 1] = grid[x - 1][y - 1] + 1; //northwest
+            } else if(x == length - 1 && y > 0 && y < height){
+                grid[x][y - 1] = grid[x][y - 1] + 1; //north
+                grid[x][y + 1] = grid[x][y + 1] + 1; //south
+                grid[x - 1][y] = grid[x - 1][y] + 1; //west
+                grid[x - 1][y - 1] = grid[x - 1][y - 1] + 1; //northwest
+                grid[x - 1][y + 1] = grid[x - 1][y + 1] + 1; //southwest
             } else {
-                grid[x][y - 1]++; //north
-                grid[x][y + 1]++; //south
-                grid[x + 1][y]++; //east
-                grid[x - 1][y]++; //west
-                grid[x + 1][y - 1]++; //northeast
-                grid[x - 1][y - 1]++; //northwest
-                grid[x - 1][y + 1]++; //southwest
-                grid[x + 1][y + 1]++; //southeast
+                grid[x][y - 1] = grid[x][y - 1] + 1; //north
+                grid[x][y + 1] = grid[x][y + 1] + 1; //south
+                grid[x + 1][y] = grid[x + 1][y] + 1; //east
+                grid[x - 1][y] = grid[x - 1][y] + 1; //west
+                grid[x + 1][y - 1] = grid[x + 1][y - 1] + 1; //northeast
+                grid[x - 1][y - 1] = grid[x - 1][y - 1] + 1; //northwest
+                grid[x - 1][y + 1] = grid[x - 1][y + 1] + 1; //southwest
+                grid[x + 1][y + 1] = grid[x + 1][y + 1] + 1; //southeast
             }
             mines--;
+            grid[x][y] = 100;
         }
     }
 
+    public void printGrid(){
+        int x = 0;
+        int y = 0;
+        String row = "";
+        while(x < length){
+            while(y < height) {
+                row += "\t" + grid[x][y] + "\t";
+                y++;
+            }
+            System.out.println(row);
+            row = "";
+            x++;
+            y = 0;
+        }
+    }
+
+    /**
+     * Main method for the Minesweeper game
+     * @param args command line arguments
+     */
     public static void main(String[] args){
         Minesweeper minesweeper = new Minesweeper(5, 5);
         minesweeper.make_grid();
+        minesweeper.printGrid();
     }
 
 
