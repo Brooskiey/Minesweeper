@@ -54,18 +54,37 @@ public class Minesweeper {
             int x = random.nextInt(length);
             int y = random.nextInt(height);
 
-            //make sure a mine isn't already there
+            // make sure a mine isn't already there
             while(grid[x][y] == 100){
                 x = random.nextInt(length);
                 y = random.nextInt(height);
             }
 
-            //cover the corner cases when x = 0 and y = 0
+            // cover top left corner case
             if (x == 0 && y == 0) {
                 grid[x][y + 1] = grid[x][y + 1] + 1; //south
                 grid[x + 1][y] = grid[x + 1][y] + 1; //east
                 grid[x + 1][y + 1] = grid[x + 1][y + 1] + 1; //southeast
 
+                // cover bottom right corner case
+            } else if (x == length - 1 && y == 0) {
+                grid[x][y + 1] = grid[x][y + 1] + 1; //south
+                grid[x - 1][y] = grid[x - 1][y] + 1; //west
+                grid[x - 1][y + 1] = grid[x - 1][y + 1] + 1; //southwest
+
+                // cover top left corner case
+            } else if (x == 0 && y == height - 1) {
+                grid[x][y - 1] = grid[x][y - 1] + 1; //north
+                grid[x + 1][y] = grid[x + 1][y] + 1; //east
+                grid[x + 1][y - 1] = grid[x + 1][y - 1] + 1; //northeast
+
+                // cover bottom right corner case
+            } else if (x == length - 1 && y == height - 1) {
+                grid[x][y - 1] = grid[x][y - 1] + 1; //north
+                grid[x - 1][y] = grid[x - 1][y] + 1; //west
+                grid[x - 1][y - 1] = grid[x - 1][y - 1] + 1; //northwest
+
+                // cover left column case
             } else if (x == 0 && y < height - 1) {
                 grid[x][y - 1] = grid[x][y - 1] + 1; //north
                 grid[x][y + 1] = grid[x][y + 1] + 1; //south
@@ -73,6 +92,7 @@ public class Minesweeper {
                 grid[x + 1][y - 1] = grid[x + 1][y - 1] + 1; //northeast
                 grid[x + 1][y + 1] = grid[x + 1][y + 1] + 1; //southeast
 
+                // cover top row case
             } else if (y == 0 && x < length - 1) {
                 grid[x][y + 1] = grid[x][y + 1] + 1; //south
                 grid[x + 1][y] = grid[x + 1][y] + 1; //east
@@ -80,6 +100,7 @@ public class Minesweeper {
                 grid[x - 1][y + 1] = grid[x - 1][y + 1] + 1; //southwest
                 grid[x + 1][y + 1] = grid[x + 1][y + 1] + 1; //southeast
 
+                // cover bottom row case
             } else if (y == height - 1 && x > 0 && x < length - 1) {
                 grid[x][y - 1] = grid[x][y - 1] + 1; //north
                 grid[x + 1][y] = grid[x + 1][y] + 1; //east
@@ -87,6 +108,8 @@ public class Minesweeper {
                 grid[x + 1][y - 1] = grid[x + 1][y - 1] + 1; //northeast
                 grid[x - 1][y - 1] = grid[x - 1][y - 1] + 1; //northwest
 
+                // cover right column case
+                // stop before y == 0
             } else if (x == length - 1 && y > 0 && y < height - 1) {
                 grid[x][y - 1] = grid[x][y - 1] + 1; //north
                 grid[x][y + 1] = grid[x][y + 1] + 1; //south
@@ -94,6 +117,7 @@ public class Minesweeper {
                 grid[x - 1][y - 1] = grid[x - 1][y - 1] + 1; //northwest
                 grid[x - 1][y + 1] = grid[x - 1][y + 1] + 1; //southwest
 
+                // middle cases
             } else {
                 grid[x][y - 1] = grid[x][y - 1] + 1; //north
                 grid[x][y + 1] = grid[x][y + 1] + 1; //south
@@ -109,18 +133,21 @@ public class Minesweeper {
         }
     }
 
-    public void printGrid(){
+    /**
+     * Prints the grid out
+     */
+    public void printGrid() {
         int x = 0;
         int y = 0;
         String row = "";
-        System.out.println("_________________________________________");
+        System.out.println("----------------------------------------");
         while (x < length) {
             while (y < height) {
                 row += "|\t" + grid[x][y] + "\t";
                 y++;
             }
             System.out.println(row + "|");
-            System.out.println("-----------------------------------------");
+            System.out.println("----------------------------------------");
             row = "";
             x++;
             y = 0;
